@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Landhaus Scherrer — Hamburg</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07090A;
+    --bg2: #0C0F10;
+    --bg3: #111618;
+    --accent: #3A8A7A;
+    --accent2: #52A898;
+    --accent-dim: rgba(58,138,122,0.12);
+    --gold: #C8A96A;
+    --gold2: #DFC280;
+    --gold-dim: rgba(200,169,106,0.1);
+    --text: #E8ECEC;
+    --text2: #A4ACAC;
+    --text3: #636A6A;
+    --border: rgba(255,255,255,0.06);
+    --border2: rgba(255,255,255,0.1);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  /* Subtle Elbe diagonal lines */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: repeating-linear-gradient(
+      -25deg,
+      transparent, transparent 120px,
+      rgba(58,138,122,0.025) 120px, rgba(58,138,122,0.025) 121px
+    );
+    pointer-events: none; z-index: 0;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 26px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.4s, padding 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(7,9,10,0.96);
+    backdrop-filter: blur(20px);
+    padding: 15px 60px;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--serif); font-size: 1.3rem; font-weight: 300;
+    letter-spacing: 0.1em; color: var(--text); text-decoration: none;
+  }
+  .nav-logo em { font-style: italic; color: var(--accent2); }
+  .nav-links { display: flex; gap: 34px; list-style: none; }
+  .nav-links a {
+    font-size: 0.76rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text2); text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent2); }
+  .nav-cta {
+    font-size: 0.76rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--bg); background: var(--accent); padding: 10px 22px;
+    text-decoration: none; transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent2); }
+
+  /* HERO — horizontal split */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    position: relative; overflow: hidden;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 140px 70px 90px;
+    position: relative; z-index: 1;
+  }
+  /* Elbe water shimmer */
+  .hero-left::before {
+    content: 'ELBE';
+    position: absolute;
+    bottom: -60px; left: -20px;
+    font-family: var(--serif); font-size: 28vw; font-weight: 300;
+    color: var(--accent); opacity: 0.03; line-height: 1;
+    letter-spacing: -0.05em; pointer-events: none; z-index: 0;
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent2); margin-bottom: 24px; display: block;
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 7vw, 7.5rem);
+    font-weight: 300; line-height: 0.95;
+    letter-spacing: -0.02em; margin-bottom: 28px;
+    position: relative; z-index: 1;
+  }
+  .hero-title em { font-style: italic; color: var(--accent2); display: block; }
+  .hero-desc {
+    font-size: 0.93rem; color: var(--text2); max-width: 480px;
+    line-height: 1.8; margin-bottom: 40px; position: relative; z-index: 1;
+  }
+  .hero-actions { display: flex; gap: 14px; position: relative; z-index: 1; }
+  .btn-primary {
+    padding: 13px 30px; background: var(--accent); color: var(--bg);
+    font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+    text-decoration: none; font-weight: 500; transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-outline {
+    padding: 13px 30px; border: 1px solid var(--border2); color: var(--text2);
+    font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+    text-decoration: none; transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent2); }
+
+  .hero-right {
+    background: var(--bg2); border-left: 1px solid var(--border);
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 140px 48px 90px; gap: 0; position: relative; z-index: 1;
+  }
+  .hero-right::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+  .stat-item { padding: 26px 0; border-bottom: 1px solid var(--border); }
+  .stat-item:last-child { border-bottom: none; }
+  .stat-num {
+    font-family: var(--serif); font-size: 2.6rem; font-weight: 300;
+    color: var(--accent2); line-height: 1; margin-bottom: 4px;
+  }
+  .stat-label { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); }
+
+  section { position: relative; z-index: 1; }
+
+  /* KÜCHE */
+  .kueche {
+    padding: 120px 60px; background: var(--bg2);
+  }
+  .kueche-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+  }
+  .section-eyebrow { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent2); margin-bottom: 16px; display: block; }
+  .section-title {
+    font-family: var(--serif); font-size: clamp(2.4rem, 4vw, 3.5rem);
+    font-weight: 300; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 24px;
+  }
+  .section-title em { font-style: italic; color: var(--accent2); }
+  .kueche-desc { font-size: 0.92rem; color: var(--text2); line-height: 1.8; margin-bottom: 36px; }
+  .feature-pills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill {
+    padding: 6px 16px; border: 1px solid rgba(58,138,122,0.3);
+    background: var(--accent-dim); color: var(--accent2);
+    font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .kueche-cards { display: flex; flex-direction: column; gap: 16px; }
+  .kueche-card {
+    background: var(--bg3); border: 1px solid var(--border); padding: 28px 32px;
+    position: relative; overflow: hidden; transition: border-color 0.3s;
+  }
+  .kueche-card:hover { border-color: rgba(58,138,122,0.25); }
+  .kueche-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+  .kk-title { font-family: var(--serif); font-size: 1.2rem; font-weight: 400; margin-bottom: 8px; }
+  .kk-text { font-size: 0.85rem; color: var(--text2); line-height: 1.65; }
+
+  /* SPEISEKARTE */
+  .speisekarte { padding: 120px 60px; background: var(--bg); }
+  .speisekarte-inner { max-width: 1200px; margin: 0 auto; }
+  .menu-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; margin-top: 60px; }
+  .menu-col {
+    background: var(--bg2); border: 1px solid var(--border); padding: 44px 36px;
+    transition: border-color 0.3s;
+  }
+  .menu-col:hover { border-color: rgba(58,138,122,0.2); }
+  .menu-col-title {
+    font-family: var(--serif); font-size: 1.3rem; font-weight: 400;
+    margin-bottom: 28px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+  }
+  .menu-item { padding: 14px 0; border-bottom: 1px solid var(--border); transition: padding-left 0.2s; }
+  .menu-item:last-child { border-bottom: none; }
+  .menu-item:hover { padding-left: 6px; }
+  .menu-item-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .menu-item-name { font-family: var(--serif); font-size: 1rem; font-weight: 400; }
+  .menu-item-price { font-size: 0.8rem; color: var(--accent2); white-space: nowrap; flex-shrink: 0; }
+  .menu-item-desc { font-size: 0.73rem; color: var(--text3); margin-top: 3px; line-height: 1.5; }
+
+  /* DEGUSTATIONSMENÜ */
+  .degustation { padding: 120px 60px; background: var(--bg2); }
+  .degustation-inner { max-width: 1200px; margin: 0 auto; }
+  .degu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 60px; }
+  .degu-card {
+    background: var(--bg3); border: 1px solid var(--border); padding: 52px 44px;
+    position: relative; overflow: hidden; transition: border-color 0.3s;
+  }
+  .degu-card.featured {
+    border-color: rgba(58,138,122,0.3);
+    background: linear-gradient(150deg, #0A100F 0%, var(--bg3) 100%);
+  }
+  .degu-card.featured::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--gold2));
+  }
+  .degu-badge {
+    display: inline-block; background: var(--accent); color: var(--bg);
+    font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+    padding: 4px 12px; margin-bottom: 20px;
+  }
+  .degu-title { font-family: var(--serif); font-size: 1.8rem; font-weight: 300; margin-bottom: 6px; }
+  .degu-price { font-family: var(--serif); font-size: 1.4rem; color: var(--gold2); font-weight: 300; margin-bottom: 20px; display: block; }
+  .degu-desc { font-size: 0.88rem; color: var(--text2); line-height: 1.75; margin-bottom: 28px; }
+  .degu-courses { display: flex; flex-direction: column; gap: 9px; }
+  .degu-course {
+    font-size: 0.82rem; color: var(--text2);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .degu-course::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+  /* ELBE BAR */
+  .elbe-bar {
+    padding: 70px 60px; background: var(--bg);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .elbe-bar-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+  }
+  .elbe-item {
+    text-align: center; padding: 16px 20px;
+    border-right: 1px solid var(--border);
+  }
+  .elbe-item:last-child { border-right: none; }
+  .elbe-num { font-family: var(--serif); font-size: 2.2rem; font-weight: 300; color: var(--accent2); margin-bottom: 6px; line-height: 1; }
+  .elbe-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); }
+
+  /* CONTACT */
+  .contact { padding: 120px 60px; background: var(--bg2); }
+  .contact-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
+  .contact-card { background: var(--bg3); border: 1px solid var(--border); padding: 44px 36px; transition: border-color 0.3s; }
+  .contact-card:hover { border-color: rgba(58,138,122,0.2); }
+  .cc-title {
+    font-family: var(--serif); font-size: 1.2rem; font-weight: 400;
+    margin-bottom: 22px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .cc-title span { font-size: 0.9rem; opacity: 0.5; }
+  .hours-list { display: flex; flex-direction: column; gap: 10px; }
+  .hours-row { display: flex; justify-content: space-between; font-size: 0.86rem; }
+  .hours-day { color: var(--text2); }
+  .hours-time { color: var(--text); font-weight: 400; }
+  .hours-closed { color: var(--text3); font-style: italic; }
+  .contact-detail { display: flex; flex-direction: column; gap: 16px; }
+  .detail-row { display: flex; flex-direction: column; gap: 4px; }
+  .detail-label { font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); }
+  .detail-value { font-size: 0.9rem; color: var(--text); }
+  .detail-value a { color: var(--accent2); text-decoration: none; }
+  .detail-value a:hover { color: var(--accent); }
+
+  footer {
+    background: var(--bg); border-top: 1px solid var(--border);
+    padding: 36px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-logo { font-family: var(--serif); font-size: 1.2rem; font-weight: 300; color: var(--text2); }
+  .footer-logo em { font-style: italic; color: var(--accent2); }
+  .footer-copy { font-size: 0.76rem; color: var(--text3); }
+  .footer-award { font-size: 0.78rem; color: var(--gold2); letter-spacing: 0.1em; }
+
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    nav.scrolled { padding: 14px 24px; }
+    .nav-links, .nav-cta { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 120px 24px 60px; }
+    .hero-left::before { display: none; }
+    .hero-right { display: none; }
+    .kueche { padding: 72px 24px; }
+    .kueche-inner { grid-template-columns: 1fr; gap: 40px; }
+    .speisekarte { padding: 72px 24px; }
+    .menu-grid { grid-template-columns: 1fr; }
+    .degustation { padding: 72px 24px; }
+    .degu-grid { grid-template-columns: 1fr; }
+    .elbe-bar { padding: 48px 24px; }
+    .elbe-bar-inner { grid-template-columns: 1fr 1fr; }
+    .elbe-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .contact { padding: 72px 24px; }
+    .contact-inner { grid-template-columns: 1fr; }
+    footer { padding: 28px 24px; flex-direction: column; gap: 14px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">Landhaus <em>Scherrer</em></a>
+  <ul class="nav-links">
+    <li><a href="#kueche">Küche</a></li>
+    <li><a href="#speisekarte">Karte</a></li>
+    <li><a href="#menu">Menüs</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+  <a href="tel:+4915792352009" class="nav-cta">Reservierung</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <span class="hero-eyebrow">★ Michelin · Hamburg Othmarschen</span>
+    <h1 class="hero-title">Landhaus<br><em>Scherrer</em></h1>
+    <p class="hero-desc">
+      An der Elbchaussee, wo Hamburg seinen ruhigsten Atem hat —
+      norddeutsche Hochküche in einem der schönsten Gourmet-Locations der Stadt.
+      Seit Jahrzehnten eine Institution. Küchenchef Heinz O. Wehmann.
+    </p>
+    <div class="hero-actions">
+      <a href="tel:+4915792352009" class="btn-primary">Tisch reservieren</a>
+      <a href="#speisekarte" class="btn-outline">Zur Karte</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="stat-item">
+      <div class="stat-num">★</div>
+      <div class="stat-label">Michelin Stern</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">Mo–Sa</div>
+      <div class="stat-label">Mittag & Abend</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">Elbe</div>
+      <div class="stat-label">Elbchaussee 130</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">Nord</div>
+      <div class="stat-label">Norddeutsche Hochküche</div>
+    </div>
+  </div>
+</section>
+
+<section class="kueche" id="kueche">
+  <div class="kueche-inner">
+    <div>
+      <span class="section-eyebrow">Die Philosophie</span>
+      <h2 class="section-title">Norddeutsche<br><em>Hochküche</em></h2>
+      <p class="kueche-desc">
+        Das Landhaus Scherrer steht für eine Küche, die ihre Wurzeln kennt
+        und liebt: norddeutsch in der Seele, weltgewandt in der Technik.
+        Heinz O. Wehmann kocht seit Jahrzehnten für Hamburg — mit Respekt
+        vor dem Produkt und dem Gast.
+      </p>
+      <div class="feature-pills">
+        <span class="pill">Norddeutsch</span>
+        <span class="pill">Saisonal</span>
+        <span class="pill">Klassik</span>
+        <span class="pill">Elbnähe</span>
+        <span class="pill">★ Michelin</span>
+      </div>
+    </div>
+    <div class="kueche-cards">
+      <div class="kueche-card">
+        <div class="kk-title">Das Produkt zählt</div>
+        <p class="kk-text">Fisch aus der Nordsee, Fleisch von regionalen Höfen, Gemüse nach Saison — das Landhaus Scherrer lebt vom Besten, was das Norden zu bieten hat.</p>
+      </div>
+      <div class="kueche-card">
+        <div class="kk-title">Klassische Technik</div>
+        <p class="kk-text">Keine Spielereien um der Spielereien willen. Wehmanns Küche achtet die Klassik der französischen Haute Cuisine und bringt sie in den deutschen Norden.</p>
+      </div>
+      <div class="kueche-card">
+        <div class="kk-title">Hauscharakter</div>
+        <p class="kk-text">Das historische Gebäude, die persönliche Atmosphäre, der Blick zur Elbe — das Landhaus Scherrer ist kein Restaurant, es ist ein Erlebnis.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="speisekarte" id="speisekarte">
+  <div class="speisekarte-inner">
+    <div style="margin-bottom: 0;">
+      <span class="section-eyebrow">Aktuelle Karte</span>
+      <h2 class="section-title">À <em>la Carte</em></h2>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-col">
+        <div class="menu-col-title">Vorspeisen</div>
+        <div class="menu-item">
+          <div class="menu-item-top">
+            <span class="menu-item-name">Matjes nach Hausfrauenart</span>
+            <span class="menu-item-price">€22</span>
+          </div>
+          <div class="menu-item-desc">Saure Sahne · Apfel · Zwiebeln · nordische Tradition</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-top">
+            <span class="menu-item-name">Krabbencocktail Scherrer</span>
+            <span class="menu-item-price">€26</span>
+          </div>
+          <div class="menu-item-desc">Nordseekrabben · Avocado · Dill · Sourdough-Chip</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-top">
+            <span class="menu-item-name">Labskaus-Variation</span>
+            <span class="menu-item-price">€24</span>
+          </div>
+          <div class="menu-item-desc">Rote Bete · Wachtelei · Rollmops · Matjescrème</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-top">
+            <span class="menu-item-name">Foie Gras · Brioche</span>
+            <span class="menu-item-price">€48</span>
+          </div>
+          <div class="menu-item-desc">Feigenconfit · Sauternes-Gelee · Haselnuss</div>
+        </div>
+      </div>
+      <div class="menu-col">
+        <div class="menu-col-title">Hauptgänge</div>
+        <div class="menu-item">
+          <div class="menu-item-top">
+            <span class="menu-item-name">Scholle Finkenwerder Art</span>
+            <span class="menu-item-price">€38</span>
+          </div>
+          <div class="menu-item-desc">Speck · Krabben · Butter · Kapern · Petersilienkartoffeln</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-top">
+            <span class="menu-item-name">Hamburger Stubenküken</span>
+            <span class="menu-item-price">€44</span>
+          </div>
+          <div class="menu-item-desc">Morcheln · Spargel · Riesling-Rahmsauce</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-top">
+            <span class="menu-item-name">Kalbskotelett</span>
+            <span class="menu-item-price">€52</span>
+          </div>
+          <div class="menu-item-desc">Steinpilze · Rösti · Kräuter-Gremolata · Jus</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-top">
+            <span class="menu-item-name">Rücken vom Elblamm</span>
+            <span class="menu-item-price">€48</span>
+          </div>
+          <div class="menu-item-desc">Bohnen · Thymian-Jus · Kartoffel-Gratin</div>
+        </div>
+      </div>
+      <div class="menu-col">
+        <div class="menu-col-title">Desserts</div>
+        <div class="menu-item">
+          <div class="menu-item-top">
+            <span class="menu-item-name">Rote Grütze</span>
+            <span class="menu-item-price">€16</span>
+          </div>
+          <div class="menu-item-desc">Hausgemacht · Vanillesauce · frische Beeren</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-top">
+            <span class="menu-item-name">Rum-Topf-Variation</span>
+            <span class="menu-item-price">€18</span>
+          </div>
+          <div class="menu-item-desc">Alter Rum · Mascarponecreme · Gewürzspekulatius</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-top">
+            <span class="menu-item-name">Käse norddeutsch</span>
+            <span class="menu-item-price">€24</span>
+          </div>
+          <div class="menu-item-desc">6 Sorten · Brot · Chutney · Nüsse</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-top">
+            <span class="menu-item-name">Petit Fours</span>
+            <span class="menu-item-price">inkl.</span>
+          </div>
+          <div class="menu-item-desc">Hausgemachte Süßigkeiten zum Abschluss</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="degustation" id="menu">
+  <div class="degustation-inner">
+    <div style="margin-bottom: 0;">
+      <span class="section-eyebrow">Das große Erlebnis</span>
+      <h2 class="section-title">Degustation<em>smenüs</em></h2>
+    </div>
+    <div class="degu-grid">
+      <div class="degu-card">
+        <h3 class="degu-title">Nordisches Menü</h3>
+        <span class="degu-price">€118 p.P.</span>
+        <p class="degu-desc">Fünf Gänge durch die norddeutsche Küchentradition — mit Ausblick auf die Elbe.</p>
+        <div class="degu-courses">
+          <div class="degu-course">Amuse Bouche</div>
+          <div class="degu-course">Nordsee-Vorspeise</div>
+          <div class="degu-course">Warmer Zwischengang</div>
+          <div class="degu-course">Hauptgang · Dessert</div>
+        </div>
+      </div>
+      <div class="degu-card featured">
+        <div class="degu-badge">★ Empfohlen</div>
+        <h3 class="degu-title">Grand Menu Scherrer</h3>
+        <span class="degu-price">€175 p.P.</span>
+        <p class="degu-desc">
+          Sieben Gänge — die vollständige Interpretation von Heinz O. Wehmann.
+          Weinbegleitung auf Anfrage (€85).
+        </p>
+        <div class="degu-courses">
+          <div class="degu-course">Amuse Bouche</div>
+          <div class="degu-course">Kalt · Warm · Fischgang</div>
+          <div class="degu-course">Fleisch-Hauptgang · Predessert</div>
+          <div class="degu-course">Dessert & Petit Fours</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="elbe-bar">
+  <div class="elbe-bar-inner">
+    <div class="elbe-item">
+      <div class="elbe-num">★</div>
+      <div class="elbe-label">Michelin Stern</div>
+    </div>
+    <div class="elbe-item">
+      <div class="elbe-num">Elbe</div>
+      <div class="elbe-label">Elbchaussee-Lage</div>
+    </div>
+    <div class="elbe-item">
+      <div class="elbe-num">Nord</div>
+      <div class="elbe-label">Norddeutsche Hochküche</div>
+    </div>
+    <div class="elbe-item">
+      <div class="elbe-num">Mo–Sa</div>
+      <div class="elbe-label">Mittag & Abend</div>
+    </div>
+  </div>
+</div>
+
+<section class="contact" id="kontakt">
+  <div style="text-align:center; margin-bottom: 48px;">
+    <span class="section-eyebrow">Besuchen Sie uns</span>
+    <h2 class="section-title">Reservierung &<br><em>Anfahrt</em></h2>
+  </div>
+  <div class="contact-inner">
+    <div class="contact-card">
+      <h3 class="cc-title"><span>🕐</span> Öffnungszeiten</h3>
+      <div class="hours-list">
+        <div class="hours-row"><span class="hours-day">Mo–Sa Mittag</span><span class="hours-time">12:00 – 14:30</span></div>
+        <div class="hours-row"><span class="hours-day">Mo–Sa Abend</span><span class="hours-time">18:00 – 21:00</span></div>
+        <div class="hours-row"><span class="hours-day">Sonntag</span><span class="hours-closed">geschlossen</span></div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <h3 class="cc-title"><span>📍</span> Adresse</h3>
+      <div class="contact-detail">
+        <div class="detail-row">
+          <span class="detail-label">Straße</span>
+          <span class="detail-value">Elbchaussee 130<br>22763 Hamburg</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Stadtteil</span>
+          <span class="detail-value">Hamburg-Othmarschen</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Anfahrt</span>
+          <span class="detail-value">Bus 183 · Haltestelle Elbchaussee</span>
+        </div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <h3 class="cc-title"><span>☎</span> Kontakt</h3>
+      <div class="contact-detail">
+        <div class="detail-row">
+          <span class="detail-label">Telefon</span>
+          <span class="detail-value"><a href="tel:+4915792352009">+49 157 9235 2009</a></span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">E-Mail</span>
+          <span class="detail-value"><a href="mailto:kontakt@landhausscherrer.de">kontakt@landhausscherrer.de</a></span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Website</span>
+          <span class="detail-value"><a href="https://landhausscherrer.de">landhausscherrer.de</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Landhaus <em>Scherrer</em></div>
+  <div class="footer-copy">© 2025 · Elbchaussee 130 · 22763 Hamburg</div>
+  <div class="footer-award">★ Michelin · Norddeutsche Hochküche</div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+</script>
+</body>
+</html>
